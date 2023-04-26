@@ -5,19 +5,28 @@ class UserController {
   static async insertUser(req, res) {
     const { email, password } = req.body;
     try {
-      await Users.insertOne(email, password);
-
+      const result = await Users.insertOne(email, password);
+      
+      if(result.error) {
+        res.status(404).send({
+          status: "Failed",
+          message: result.error,
+        });
+        return;
+      }
+  
       res.status(201).send({
         status: "success",
         message: "Data berhasil dibuat",
       });
     } catch (err) {
-      res.status(404).send({
+      res.status(500).send({
         status: "Failed",
         message: err.message,
       });
     }
   }
+  
 
   static async loginUser(req, res) {
     try {
@@ -40,7 +49,7 @@ class UserController {
       console.log(err);
       res.send({
         status: "failed",
-        message: err,
+        message: err.message,
       });
     }
   }

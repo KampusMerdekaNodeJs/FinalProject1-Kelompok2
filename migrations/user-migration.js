@@ -6,8 +6,9 @@ const pool = require("../connection/connection-setup");
   try {
     await pool.query(`create table users (
             id uuid primary key,
-            password varchar not null, 
-            email varchar not null
+            email VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) not null 
+            
             
         );
         
